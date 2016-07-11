@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+  play-scala:
+    image: u6kapps/play-scala-docker
+    environment:
+      - VIRTUAL_HOST=play-scala.u6k.me
+      - VIRTUAL_PORT=9000
+      - LETSENCRYPT_HOST=play-scala.u6k.me
+      - LETSENCRYPT_EMAIL=u6k.apps@gmail.com
+    restart: always
+
+networks:
+  default:
+    external:
+      name: front_default
