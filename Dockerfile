@@ -15,28 +15,9 @@ RUN curl -OL https://downloads.typesafe.com/typesafe-activator/1.3.10/typesafe-a
 
 RUN activator new my-app play-scala && \
     cd my-app/ && \
-    activator dist && \
+    activator compile dist && \
     cd ../ && \
     rm -rf my-app/
-
-### Setup git ###
-
-RUN git config --global user.name "u6k" && \
-    git config --global user.email "u6k.apps@gmail.com"
-
-RUN curl -OL https://raw.github.com/nvie/gitflow/develop/contrib/gitflow-installer.sh && \
-    chmod +x gitflow-installer.sh && \
-    ./gitflow-installer.sh
-
-### Setup ssh, key ###
-
-RUN mkdir /root/.ssh/ && \
-    chown -R root:root /root/.ssh/ && \
-    chmod 0700 /root/.ssh/
-WORKDIR /root/.ssh/
-COPY ssh/id_rsa .
-COPY ssh/id_rsa.pub .
-RUN chmod 0600 id_rsa*
 
 ### Update apt-get ###
 
@@ -54,14 +35,13 @@ RUN (echo '[supervisord]' && \
 
 ### Setup other tool ###
 
-RUN apt-get install -y vim tig
+RUN apt-get install -y vim
 
+### Create play-scala project ###
 
-
-RUN mkdir -p /root/work/
-WORKDIR /root/work/
+WORKDIR /var/lib/
 RUN activator new my-app play-scala
-WORKDIR my-app/
+WORKDIR /var/lib/my-app/
 
 EXPOSE 9000
 
